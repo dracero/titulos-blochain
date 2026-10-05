@@ -1,0 +1,70 @@
+---
+// Tab 3: Anclaje Merkle & Blockchain
+---
+
+<section id="view-anchor" class="tab-view">
+  <div class="view-header">
+    <div>
+      <h2>Anclaje Periódico en Blockchain (BFA o Besu QBFT)</h2>
+      <p>Se agrupan los hashes de los títulos emitidos en un árbol de Merkle y se registra únicamente la raíz (32 bytes) como prueba inmutable de existencia y fecha.</p>
+    </div>
+    <button class="btn btn-primary" id="btn-do-batch-anchor">
+      <span>⚡</span> Anclar Lote Pendiente en Blockchain
+    </button>
+  </div>
+
+  <div class="grid-2col">
+    <!-- Columna Izquierda: Visualizador del Árbol de Merkle -->
+    <div class="card glass-panel">
+      <h3 class="card-title">Árbol de Merkle del Lote</h3>
+      <p class="card-desc">Representación criptográfica de las hojas (títulos) y el cálculo sucesivo de hashes SHA-256 hacia la raíz:</p>
+      
+      <div class="merkle-tree-visualizer" id="merkle-visualizer">
+        <div class="empty-state">Emita títulos y ancle un lote para visualizar la estructura del árbol de Merkle.</div>
+      </div>
+
+      <div class="info-callout mt-3">
+        <strong>💡 Privacidad y Eficiencia:</strong>
+        Al registrar únicamente la raíz en BFA o Besu, no se revelan datos de los graduados y se pueden registrar miles de títulos en una sola transacción a costo $0.
+      </div>
+    </div>
+
+    <!-- Columna Derecha: Registro Inmutable en Contrato Inteligente -->
+    <div class="card glass-panel">
+      <h3 class="card-title">Registro en Smart Contract (MerkleAnchorRegistry)</h3>
+      <p class="card-desc">Transacciones confirmadas en la red permisionada (gas cero):</p>
+      
+      <div class="blockchain-details-box" id="latest-anchor-box">
+        <div class="meta-row">
+          <span class="meta-name">Red Blockchain:</span>
+          <span class="meta-val" id="bc-network">Cargando...</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-name">Contrato Registro:</span>
+          <span class="meta-val code-font" id="bc-contract">Cargando...</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-name">Costo de Transacción:</span>
+          <span class="meta-val text-success">0.00 ARS (Sin minería ni monedas)</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-name">Última Raíz Anclada:</span>
+          <span class="meta-val code-font text-gold" id="bc-latest-root">Ninguna aún</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-name">Último Bloque:</span>
+          <span class="meta-val" id="bc-latest-block">#--</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-name">Tx Hash:</span>
+          <span class="meta-val code-font" id="bc-latest-tx">--</span>
+        </div>
+      </div>
+
+      <h4 class="mt-4">Historial de Lotes Anclados</h4>
+      <div class="batch-history-list" id="batch-history-list">
+        <div class="empty-state">No se registraron lotes aún.</div>
+      </div>
+    </div>
+  </div>
+</section>

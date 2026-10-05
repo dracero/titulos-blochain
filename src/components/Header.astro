@@ -1,0 +1,36 @@
+---
+// Componente Header Institucional UBA
+---
+
+<header class="app-header">
+  <div class="header-brand">
+    <div class="brand-crest">
+      <svg viewBox="0 0 100 100" class="uba-seal-icon">
+        <circle cx="50" cy="50" r="46" fill="none" stroke="#d4af37" stroke-width="3" stroke-dasharray="4 2"/>
+        <circle cx="50" cy="50" r="41" fill="#0c2340"/>
+        <path d="M50 18 L68 55 L32 55 Z" fill="#74acdf" opacity="0.9"/>
+        <path d="M50 28 L62 53 L38 53 Z" fill="#ffffff" opacity="0.95"/>
+        <rect x="47" y="55" width="6" height="26" fill="#d4af37"/>
+        <circle cx="50" cy="74" r="8" fill="#d4af37"/>
+        <circle cx="50" cy="74" r="4" fill="#0c2340"/>
+      </svg>
+    </div>
+    <div class="brand-text">
+      <div class="brand-title">UNIVERSIDAD DE BUENOS AIRES</div>
+      <div class="brand-subtitle">Títulos Universitarios Verificables &bull; Entorno de Pruebas de Arquitectura (Astro.js)</div>
+    </div>
+  </div>
+
+  <!-- Pill de estado de la red Blockchain -->
+  <div class="header-status">
+    <div class="status-indicator">
+      <span class="status-pulse" id="net-pulse"></span>
+      <span class="status-label" id="net-name">Conectando...</span>
+    </div>
+    <div class="status-meta">
+      <span class="meta-tag">Gas: <strong id="net-gas">$0 (Gratis)</strong></span>
+      <span class="meta-tag">Bloque: <strong id="net-block">#--</strong></span>
+      <span class="meta-tag">Consenso: <strong>QBFT / PoA</strong></span>
+    </div>
+  </div>
+</header>

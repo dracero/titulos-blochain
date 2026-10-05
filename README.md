@@ -16,16 +16,16 @@ Este entorno implementa **todos y cada uno de los componentes y flujos** descrip
 ## 🏛️ Mapa de la Arquitectura en el Código
 
 | Componente del Documento | Función Técnica | Implementación en este Entorno |
-| :--- | :--- | :--- |
-| **Sistema Académico** | Fuente de verdad de egresados (SIU Guaraní) | [`src/server/academic-db.js`](file:///run/media/cetec/c182e059-3c92-4885-9b5a-0b2f0aeaadfe/AIProjects/titulos-bc/src/server/academic-db.js) |
+| **Sistema Académico** | Fuente de verdad de egresados (SIU Guaraní) | [`src/lib/academic-db.js`](file:///run/media/cetec/c182e059-3c92-4885-9b5a-0b2f0aeaadfe/AIProjects/titulos-bc/src/lib/academic-db.js) |
+| **Persistencia Relacional / JSONB** | Base de datos PostgreSQL para títulos, claves HSM, revocaciones y lotes | [`src/lib/db.js`](file:///run/media/cetec/c182e059-3c92-4885-9b5a-0b2f0aeaadfe/AIProjects/titulos-bc/src/lib/db.js) y [`sql/init.sql`](file:///run/media/cetec/c182e059-3c92-4885-9b5a-0b2f0aeaadfe/AIProjects/titulos-bc/sql/init.sql) |
 | **Servicio de Emisión** | Genera credencial W3C VC 2.0 / Open Badges 3.0 y agrupa lotes | [`src/core/vc.js`](file:///run/media/cetec/c182e059-3c92-4885-9b5a-0b2f0aeaadfe/AIProjects/titulos-bc/src/core/vc.js) |
 | **HSM de Claves** | Custodia de clave privada y firma institucional protegida | [`src/core/crypto.js`](file:///run/media/cetec/c182e059-3c92-4885-9b5a-0b2f0aeaadfe/AIProjects/titulos-bc/src/core/crypto.js) (`Ed25519` + `JCS RFC 8785`) |
-| **did:web** | Publicación de clave pública en dominio UBA vía HTTPS | [`src/core/did.js`](file:///run/media/cetec/c182e059-3c92-4885-9b5a-0b2f0aeaadfe/AIProjects/titulos-bc/src/core/did.js) (`/.well-known/did.json`) |
-| **Lista de Revocación** | Estado de títulos fuera de cadena (sin datos personales) | [`src/core/status-list.js`](file:///run/media/cetec/c182e059-3c92-4885-9b5a-0b2f0aeaadfe/AIProjects/titulos-bc/src/core/status-list.js) (`/estado/1`, W3C Bitstring v1.0 gzip) |
+| **did:web** | Publicación de clave pública en dominio UBA vía HTTPS | [`src/core/did.js`](file:///run/media/cetec/c182e059-3c92-4885-9b5a-0b2f0aeaadfe/AIProjects/titulos-bc/src/core/did.js) y [`src/pages/.well-known/did.json.js`](file:///run/media/cetec/c182e059-3c92-4885-9b5a-0b2f0aeaadfe/AIProjects/titulos-bc/src/pages/.well-known/did.json.js) |
+| **Lista de Revocación** | Estado de títulos fuera de cadena (sin datos personales) | [`src/core/status-list.js`](file:///run/media/cetec/c182e059-3c92-4885-9b5a-0b2f0aeaadfe/AIProjects/titulos-bc/src/core/status-list.js) y [`src/pages/estado/[id].js`](file:///run/media/cetec/c182e059-3c92-4885-9b5a-0b2f0aeaadfe/AIProjects/titulos-bc/src/pages/estado/[id].js) |
 | **Árbol de Merkle** | Cálculo de raíces y pruebas de inclusión por lote | [`src/core/merkle.js`](file:///run/media/cetec/c182e059-3c92-4885-9b5a-0b2f0aeaadfe/AIProjects/titulos-bc/src/core/merkle.js) (SHA-256 binary Merkle Tree) |
 | **Anclaje Blockchain** | Registro de raíz de Merkle en BFA o Besu ($0 gas) | [`contracts/MerkleAnchorRegistry.sol`](file:///run/media/cetec/c182e059-3c92-4885-9b5a-0b2f0aeaadfe/AIProjects/titulos-bc/contracts/MerkleAnchorRegistry.sol) y [`src/blockchain/anchor-service.js`](file:///run/media/cetec/c182e059-3c92-4885-9b5a-0b2f0aeaadfe/AIProjects/titulos-bc/src/blockchain/anchor-service.js) |
-| **Graduado (Titular)** | Billetera digital y diploma digital con código QR | [`src/public/index.html`](file:///run/media/cetec/c182e059-3c92-4885-9b5a-0b2f0aeaadfe/AIProjects/titulos-bc/src/public/index.html) (Pestaña 4: Diploma & Billetera) |
-| **Verificador Público** | Portal web de validación en 4 fases (did:web, firma, estado, ancla) | [`src/core/verifier.js`](file:///run/media/cetec/c182e059-3c92-4885-9b5a-0b2f0aeaadfe/AIProjects/titulos-bc/src/core/verifier.js) y [`src/public/js/app.js`](file:///run/media/cetec/c182e059-3c92-4885-9b5a-0b2f0aeaadfe/AIProjects/titulos-bc/src/public/js/app.js) |
+| **Graduado (Titular)** | Billetera digital y diploma digital con código QR | [`src/components/GraduateTab.astro`](file:///run/media/cetec/c182e059-3c92-4885-9b5a-0b2f0aeaadfe/AIProjects/titulos-bc/src/components/GraduateTab.astro) (Pestaña 4: Diploma & Billetera) |
+| **Verificador Público** | Portal web de validación en 4 fases (did:web, firma, estado, ancla) | [`src/core/verifier.js`](file:///run/media/cetec/c182e059-3c92-4885-9b5a-0b2f0aeaadfe/AIProjects/titulos-bc/src/core/verifier.js) y [`src/components/VerifierTab.astro`](file:///run/media/cetec/c182e059-3c92-4885-9b5a-0b2f0aeaadfe/AIProjects/titulos-bc/src/components/VerifierTab.astro) |
 
 ---
 
@@ -52,12 +52,16 @@ Las pruebas validan en menos de 250ms:
 - Árbol de Merkle y pruebas matemáticas de inclusión.
 - Verificación completa en 4 niveles y pruebas de escenarios de riesgo (revocación, adulteración, emisión retroactiva, resiliencia ante caída de la blockchain).
 
-### 3. Iniciar el Servidor y Panel Interactivo Web
+### 3. Iniciar Todo con un Solo Comando (Desarrollo y Pruebas)
 ```bash
-npm start
-# O con recarga en vivo de cambios:
 npm run dev
 ```
+> **¿Qué hace `npm run dev`?**
+> 1. Detecta y levanta automáticamente los contenedores de **Hyperledger Besu (QBFT)** y **PostgreSQL (Persistencia JSONB)** en segundo plano mediante Docker.
+> 2. Inicializa las tablas relacionales y esquemas JSONB para egresados SIU Guaraní, títulos VC 2.0 y claves institucionales.
+> 3. Despliega (o reutiliza de forma persistente) el contrato inteligente `MerkleAnchorRegistry` en Besu con **gas cero ($0)**.
+> 4. Si Docker no estuviera disponible, inicia de forma transparente con el simulador EVM y almacenamiento en memoria sin fallar.
+> 5. Inicia el servidor Astro SSR de la UBA con recarga en caliente.
 
 Abra su navegador en:
 👉 **[http://localhost:4000/](http://localhost:4000/)**
@@ -119,37 +123,63 @@ npm run besu:down
 
 ---
 
-## 📂 Estructura del Proyecto
+## 📂 Estructura del Proyecto (Astro.js SSR)
 
 ```
 titulos-bc/
-├── package.json               # Dependencias libres y scripts de ejecución
-├── docker-compose.yml         # Contenedor oficial de Hyperledger Besu (QBFT, dev mode)
+├── package.json               # Dependencias (Astro 7, Node adapter, Ethers, Ed25519)
+├── astro.config.mjs           # Configuración Astro SSR (Standalone @astrojs/node)
+├── docker-compose.yml         # Contenedor oficial de Hyperledger Besu (QBFT, $0 gas)
 ├── start.sh                   # Script bash de arranque automático
+├── scripts/
+│   └── dev.js                 # Orquestador: Besu + dev server Astro unificado
 ├── contracts/
 │   └── MerkleAnchorRegistry.sol # Contrato Solidity de anclaje de raíces Merkle ($0 gas)
+├── public/
+│   ├── css/style.css          # Estilos institucionales UBA con glassmorphism y dark mode
+│   └── js/
+│       ├── api.js             # Cliente HTTP a los endpoints SSR de Astro
+│       └── app.js             # Controlador del árbol de Merkle, diploma interactivo y sandbox
 ├── src/
+│   ├── layouts/
+│   │   └── Layout.astro       # Layout raíz HTML5 y metadatos SEO
+│   ├── pages/
+│   │   ├── index.astro        # Página principal reactiva con tabs dinámicos
+│   │   ├── .well-known/
+│   │   │   └── did.json.js    # Endpoint did:web institucional de la UBA
+│   │   ├── estado/
+│   │   │   └── [id].js        # Endpoint W3C Bitstring Status List v1.0
+│   │   └── api/
+│   │       ├── academic/      # Registro SIU Guaraní de egresados
+│   │       ├── issuer/        # Emisión VC 2.0, anclaje por lote y revocaciones
+│   │       ├── verifier/      # Pipeline de verificación en 4 fases
+│   │       ├── blockchain/    # Estado de la red Besu y contrato de anclaje
+│   │       ├── qr/            # Generación de códigos QR para diplomas
+│   │       └── simulation/    # Escenarios interactivos del Sandbox de riesgos
+│   ├── components/
+│   │   ├── Header.astro       # Cabecera institucional UBA
+│   │   ├── NavBar.astro       # Barra de navegación por pestañas
+│   │   ├── ArchitectureTab.astro # Pestaña 1: Diagrama interactivo y flujo de 4 niveles
+│   │   ├── IssuerTab.astro    # Pestaña 2: Emisión SIU Guaraní y credenciales
+│   │   ├── AnchorTab.astro    # Pestaña 3: Árbol de Merkle y anclaje Besu
+│   │   ├── GraduateTab.astro  # Pestaña 4: Diploma digital y billetera
+│   │   ├── VerifierTab.astro  # Pestaña 5: Validador en 4 fases
+│   │   ├── SandboxTab.astro   # Pestaña 6: Banco de pruebas de seguridad
+│   │   └── Footer.astro       # Pie institucional UBA y especificaciones técnicas
+│   ├── lib/
+│   │   ├── app-context.js     # Singleton institucional (HSM, DID, StatusList, Besu)
+│   │   └── academic-db.js     # Base simulada SIU Guaraní (alumnos de Exactas, Medicina, etc.)
 │   ├── core/
-│   │   ├── crypto.js          # Ed25519, canonicalización JCS (RFC 8785), SHA-256, Multibase z...
+│   │   ├── crypto.js          # Ed25519, canonicalización JCS (RFC 8785), Multibase z...
 │   │   ├── did.js             # Generador y resolutor W3C did:web
-│   │   ├── status-list.js     # W3C Bitstring Status List v1.0 (compresión gzip y multibase)
+│   │   ├── status-list.js     # W3C Bitstring Status List v1.0 (gzip + multibase)
 │   │   ├── merkle.js          # Árbol de Merkle binario y pruebas de inclusión
 │   │   ├── vc.js              # Creador y firmador W3C VC 2.0 / Open Badges 3.0
 │   │   └── verifier.js        # Pipeline de verificación en 4 niveles
-│   ├── blockchain/
-│   │   ├── contract-abi.js    # ABI del contrato MerkleAnchorRegistry
-│   │   ├── evm-simulator.js   # Emulador local EVM con gas cero y marcas de tiempo
-│   │   └── anchor-service.js  # Conector agnóstico a la red (Besu o Simulador)
-│   ├── server/
-│   │   ├── academic-db.js     # Base simulada de SIU Guaraní (alumnos de Exactas, Medicina, Derecho, etc.)
-│   │   ├── app.js             # Servidor Express (did:web, /estado/1, APIs y auto-seed)
-│   │   └── index.js           # Punto de entrada en puerto 4000
-│   └── public/
-│       ├── index.html         # Panel Web interactivo
-│       ├── css/style.css      # Estilos premium UBA con glassmorphism y modo oscuro
-│       └── js/
-│           ├── api.js         # Cliente HTTP hacia las APIs locales
-│           └── app.js         # Controlador de tabs, árbol de Merkle, diploma y verificador
+│   └── blockchain/
+│       ├── contract-abi.js    # ABI del contrato MerkleAnchorRegistry
+│       ├── evm-simulator.js   # Emulador local EVM con gas cero y timestamps
+│       └── anchor-service.js  # Conector agnóstico (Hyperledger Besu o Simulador)
 └── test/
     ├── crypto.test.js         # Tests unitarios criptográficos Ed25519
     ├── status-list.test.js    # Tests unitarios de Bitstring Status List

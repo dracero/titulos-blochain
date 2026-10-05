@@ -1,0 +1,31 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "UBA - Títulos Universitarios Verificables | Entorno de Prueba",
+  description = "Entorno de prueba para la arquitectura de títulos verificables de la Universidad de Buenos Aires (W3C VC 2.0, Open Badges 3.0, did:web y anclaje en BFA/Besu)."
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title}</title>
+  <meta name="description" content={description}>
+  <!-- Fuentes modernas -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <slot />
+  <script is:inline src="/js/api.js"></script>
+  <script is:inline src="/js/app.js"></script>
+</body>
+</html>

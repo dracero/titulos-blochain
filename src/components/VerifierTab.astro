@@ -1,0 +1,106 @@
+---
+// Tab 5: Portal Público de Verificación (4 Niveles)
+---
+
+<section id="view-verifier" class="tab-view">
+  <div class="view-header">
+    <div>
+      <h2>Portal Público de Verificación de Títulos</h2>
+      <p>Utilizado por empleadores o universidades extranjeras. Ejecuta los 4 niveles de verificación definidos en la Sección 4 del informe técnico.</p>
+    </div>
+    <button class="btn btn-primary" id="btn-run-verification">
+      <span>🔍</span> Ejecutar Verificación
+    </button>
+  </div>
+
+  <div class="grid-2col">
+    <!-- Columna Izquierda: Entrada de Datos de Verificación -->
+    <div class="card glass-panel">
+      <h3 class="card-title">Carga de Credencial a Validar</h3>
+      <p class="card-desc">Pegue el JSON de la credencial o elija un título emitido:</p>
+      
+      <div class="preset-selector mb-3">
+        <label for="select-verifier-preset">Cargar título de prueba:</label>
+        <select id="select-verifier-preset" class="input-field">
+          <!-- Se puebla dinámicamente -->
+        </select>
+      </div>
+
+      <div class="options-bar mb-3">
+        <label class="checkbox-label">
+          <input type="checkbox" id="check-skip-blockchain">
+          <span>Simular verificación sin blockchain (demuestra autonomía did:web)</span>
+        </label>
+      </div>
+
+      <textarea id="verifier-json-input" class="textarea-field" rows="12" placeholder="Pegue aquí el objeto JSON de la Verifiable Credential..."></textarea>
+    </div>
+
+    <!-- Columna Derecha: Resultados y Diagnóstico de los 4 Niveles -->
+    <div class="card glass-panel">
+      <div class="card-header-bar">
+        <h3 class="card-title">Diagnóstico de Verificación</h3>
+        <div id="overall-badge" class="badge-neutral">Listo para verificar</div>
+      </div>
+
+      <div class="overall-summary-banner" id="overall-summary-banner" style="display: none;">
+        <span id="summary-icon">ℹ️</span>
+        <span id="summary-text">Presione "Ejecutar Verificación" para comenzar.</span>
+      </div>
+
+      <div class="verification-stepper mt-3">
+        <!-- Paso 1: did:web -->
+        <div class="step-card" id="step-card-did">
+          <div class="step-header">
+            <div class="step-number">1</div>
+            <div class="step-info">
+              <h4>Identidad del Emisor (did:web)</h4>
+              <p>Resuelve el DID y valida la clave pública institucional en el dominio uba.ar</p>
+            </div>
+            <div class="step-status" id="status-step-did">⚪ PENDIENTE</div>
+          </div>
+          <div class="step-body" id="body-step-did"></div>
+        </div>
+
+        <!-- Paso 2: Firma Criptográfica -->
+        <div class="step-card" id="step-card-sig">
+          <div class="step-header">
+            <div class="step-number">2</div>
+            <div class="step-info">
+              <h4>Firma Criptográfica (Ed25519)</h4>
+              <p>DataIntegrityProof eddsa-rdfc-2022 con JCS. Garantiza integridad absoluta</p>
+            </div>
+            <div class="step-status" id="status-step-sig">⚪ PENDIENTE</div>
+          </div>
+          <div class="step-body" id="body-step-sig"></div>
+        </div>
+
+        <!-- Paso 3: Lista de Revocación -->
+        <div class="step-card" id="step-card-status">
+          <div class="step-header">
+            <div class="step-number">3</div>
+            <div class="step-info">
+              <h4>Lista de Revocación (Bitstring Status List)</h4>
+              <p>Verifica si el título fue anulado o rectificado sin tocar la blockchain</p>
+            </div>
+            <div class="step-status" id="status-step-status">⚪ PENDIENTE</div>
+          </div>
+          <div class="step-body" id="body-step-status"></div>
+        </div>
+
+        <!-- Paso 4: Anclaje Blockchain -->
+        <div class="step-card" id="step-card-anchor">
+          <div class="step-header">
+            <div class="step-number">4</div>
+            <div class="step-info">
+              <h4>Prueba de Merkle & Anclaje Blockchain</h4>
+              <p>Comprueba la prueba de inclusión contra la raíz registrada en Besu / BFA</p>
+            </div>
+            <div class="step-status" id="status-step-anchor">⚪ PENDIENTE</div>
+          </div>
+          <div class="step-body" id="body-step-anchor"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

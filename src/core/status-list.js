@@ -7,7 +7,7 @@
  * - Codificación Multibase base64url (prefijo 'u')
  */
 
-const zlib = require('node:zlib');
+import zlib from 'node:zlib';
 
 class BitstringStatusList {
   /**
@@ -131,4 +131,5 @@ class BitstringStatusList {
   }
 }
 
-module.exports = BitstringStatusList;
+export { BitstringStatusList };
+export default BitstringStatusList;

@@ -1,11 +1,13 @@
 services:
-  # Nodo local Hyperledger Besu (QBFT / Dev Mode con gas en cero y sin criptomoneda)
+  # Nodo local Hyperledger Besu (Consenso QBFT / Red Permisionada con gas en cero y sin criptomoneda)
   # 100% gratuito y de código abierto (Apache 2.0)
   besu-node:
     image: hyperledger/besu:latest
     container_name: uba-besu-node
     command:
-      - --network=dev
+      - --data-path=/tmp/besu-data
+      - --genesis-file=/data/genesis.json
+      - --node-private-key-file=/data/key.priv
       - --rpc-http-enabled=true
       - --rpc-http-host=0.0.0.0
       - --rpc-http-port=8545
@@ -13,6 +15,32 @@ services:
       - --rpc-http-cors-origins=*
       - --host-allowlist=*
       - --min-gas-price=0
+    volumes:
+      - ./besu/genesis.json:/data/genesis.json:ro
+      - ./besu/key.priv:/data/key.priv:ro
     ports:
       - "8545:8545"
     restart: unless-stopped
+
+  # Base de Datos Relacional PostgreSQL para persistencia de títulos (JSONB) y SIU Guaraní
+  postgres:
+    image: postgres:16-alpine
+    container_name: uba-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-titulos_uba}
+      POSTGRES_USER: ${POSTGRES_USER:-uba_admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-uba_secret_2026}
+    volumes:
+      - uba_pg_data:/var/lib/postgresql/data
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U uba_admin -d titulos_uba"]
+      interval: 3s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  uba_pg_data:

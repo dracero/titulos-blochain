@@ -8,7 +8,7 @@
  * - Consulta de anclajes con marcas de tiempo verificables
  */
 
-const crypto = require('node:crypto');
+import crypto from 'node:crypto';
 
 class EvmSimulator {
   constructor(options = {}) {
@@ -142,4 +142,5 @@ class EvmSimulator {
   }
 }
 
-module.exports = EvmSimulator;
+export { EvmSimulator };
+export default EvmSimulator;

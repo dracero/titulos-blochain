@@ -4,7 +4,8 @@
  * de la propuesta técnica para la Universidad de Buenos Aires.
  */
 
-const { canonicalizeJson, signEd25519, sha256 } = require('./crypto');
+import crypto from 'node:crypto';
+import { canonicalizeJson, signEd25519, sha256 } from './crypto.js';
 
 /**
  * Crea una estructura de credencial de título universitario previa a la firma
@@ -118,11 +119,16 @@ function getCredentialCanonicalData(signedCredential) {
 }
 
 function cryptoRandomUuid() {
-  const crypto = require('node:crypto');
   return crypto.randomUUID();
 }
 
-module.exports = {
+export {
+  createDegreeCredential,
+  signCredential,
+  getCredentialCanonicalData
+};
+
+export default {
   createDegreeCredential,
   signCredential,
   getCredentialCanonicalData

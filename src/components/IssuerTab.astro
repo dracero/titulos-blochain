@@ -1,0 +1,66 @@
+---
+// Tab 2: Emisión UBA
+---
+
+<section id="view-issuer" class="tab-view">
+  <div class="view-header">
+    <div>
+      <h2>Servicio de Emisión de Títulos (UBA)</h2>
+      <p>Registro de egreso en el sistema académico, armado de VC 2.0 y firma criptográfica con HSM institucional.</p>
+    </div>
+    <button class="btn btn-secondary" id="btn-refresh-graduates">🔄 Actualizar Lista</button>
+  </div>
+
+  <div class="grid-2col">
+    <!-- Columna Izquierda: Graduados en Sistema Académico -->
+    <div class="card glass-panel">
+      <div class="card-header-bar">
+        <h3 class="card-title">1. Graduados Confirmados (SIU Guaraní)</h3>
+        <span class="badge-neutral" id="graduates-count">5 graduados</span>
+      </div>
+      <p class="card-desc">Seleccione un egresado con trámite de diploma aprobado para emitir su credencial digital verificable:</p>
+      <div class="list-container" id="graduates-list">
+        <!-- Se puebla dinámicamente -->
+      </div>
+
+      <!-- Formulario para agregar graduado nuevo -->
+      <div class="quick-add-form mt-4">
+        <h4>+ Registrar Nuevo Graduado para Prueba</h4>
+        <div class="form-row">
+          <input type="text" id="new-grad-name" placeholder="Nombre y Apellido" class="input-field">
+          <input type="text" id="new-grad-dni" placeholder="DNI" class="input-field">
+        </div>
+        <div class="form-row">
+          <select id="new-grad-faculty" class="input-field">
+            <option value="Facultad de Ciencias Exactas y Naturales">Fac. de Ciencias Exactas y Naturales</option>
+            <option value="Facultad de Medicina">Facultad de Medicina</option>
+            <option value="Facultad de Derecho">Facultad de Derecho</option>
+            <option value="Facultad de Ingeniería">Facultad de Ingeniería</option>
+            <option value="Facultad de Ciencias Económicas">Facultad de Ciencias Económicas</option>
+            <option value="Facultad de Filosofía y Letras">Facultad de Filosofía y Letras</option>
+          </select>
+          <input type="text" id="new-grad-degree" placeholder="Título (ej: Lic. en Física)" class="input-field">
+        </div>
+        <button class="btn btn-secondary btn-block" id="btn-add-graduate">Agregar al Sistema Académico</button>
+      </div>
+    </div>
+
+    <!-- Columna Derecha: Títulos Emitidos y Estado de Revocación -->
+    <div class="card glass-panel">
+      <div class="card-header-bar">
+        <h3 class="card-title">2. Títulos Emitidos & Estado de Vigencia</h3>
+        <span class="badge-info" id="issued-count">0 emitidos</span>
+      </div>
+      <p class="card-desc">Títulos firmados con la clave de la UBA. Cada título tiene un índice asignado en la Bitstring Status List:</p>
+      <div class="list-container" id="issued-credentials-list">
+        <div class="empty-state">No hay títulos emitidos aún. Emita uno desde la lista de la izquierda.</div>
+      </div>
+      <div class="batch-action-bar mt-3" id="batch-action-container" style="display: none;">
+        <div class="batch-info-text">
+          <span id="pending-anchor-count">0</span> títulos pendientes de anclaje a la blockchain.
+        </div>
+        <button class="btn btn-primary" id="btn-goto-anchor">Ir a Anclaje en Lote ➡️</button>
+      </div>
+    </div>
+  </div>
+</section>

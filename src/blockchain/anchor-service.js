@@ -9,9 +9,9 @@
  * duplicar el ancla en una red Besu propia o migrar más adelante sin reemitir ningún título".
  */
 
-const { ethers } = require('ethers');
-const EvmSimulator = require('./evm-simulator');
-const { MERKLE_ANCHOR_ABI } = require('./contract-abi');
+import { ethers } from 'ethers';
+import EvmSimulator from './evm-simulator.js';
+import { MERKLE_ANCHOR_ABI, MERKLE_ANCHOR_BYTECODE } from './contract-abi.js';
 
 class AnchorService {
   constructor(options = {}) {
@@ -19,10 +19,12 @@ class AnchorService {
     this.contractAddress = options.contractAddress || process.env.ANCHOR_CONTRACT_ADDRESS || null;
     this.privateKey = options.privateKey || '0x8f2a55949038a9610f50fb23b5883af3b4ecb3c3bb792cbcefbd1542c692be63'; // Cuenta de prueba prefondeada en Besu dev
     
+    this.db = options.db || null;
     this.simulator = new EvmSimulator();
     this.isRealBesu = false;
     this.provider = null;
     this.contract = null;
+    this.wallet = null;
     this.networkName = 'BFA / Besu QBFT (Simulador Local)';
   }
 
@@ -32,22 +34,53 @@ class AnchorService {
   async init() {
     try {
       const prov = new ethers.JsonRpcProvider(this.rpcUrl);
-      // Timeout corto de 800ms para no demorar el inicio si no hay contenedor Besu
+      // Timeout de 1500ms para no demorar el inicio si no hay contenedor Besu
       const network = await Promise.race([
         prov.getNetwork(),
-        new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout RPC Besu')), 800))
+        new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout RPC Besu')), 1500))
       ]);
 
       this.provider = prov;
       this.isRealBesu = true;
-      this.networkName = `Hyperledger Besu (Chain ID: ${network.chainId})`;
+      this.networkName = `Hyperledger Besu QBFT (Chain ID: ${network.chainId})`;
 
       const wallet = new ethers.Wallet(this.privateKey, this.provider);
+      this.wallet = wallet;
+
+      if (!this.contractAddress && this.db) {
+        try {
+          const savedAddr = await this.db.getSetting('anchor_contract_address');
+          if (savedAddr) {
+            const code = await this.provider.getCode(savedAddr);
+            if (code && code !== '0x') {
+              this.contractAddress = savedAddr;
+            }
+          }
+        } catch (_) {}
+      }
 
       if (this.contractAddress) {
         this.contract = new ethers.Contract(this.contractAddress, MERKLE_ANCHOR_ABI, wallet);
+      } else if (MERKLE_ANCHOR_BYTECODE) {
+        try {
+          const factory = new ethers.ContractFactory(MERKLE_ANCHOR_ABI, MERKLE_ANCHOR_BYTECODE, wallet);
+          const deployedContract = await factory.deploy();
+          await deployedContract.waitForDeployment();
+          this.contractAddress = await deployedContract.getAddress();
+          this.contract = deployedContract;
+          console.log(`⛓️  [Besu QBFT] Contrato MerkleAnchorRegistry desplegado en: ${this.contractAddress}`);
+
+          if (this.db) {
+            try {
+              await this.db.setSetting('anchor_contract_address', this.contractAddress);
+            } catch (_) {}
+          }
+        } catch (deployErr) {
+          console.warn('Aviso: No se pudo auto-desplegar contrato en Besu:', deployErr.message);
+        }
       }
-      return { isRealBesu: true, chainId: network.chainId };
+
+      return { isRealBesu: true, chainId: network.chainId, contractAddress: this.contractAddress };
     } catch (err) {
       this.isRealBesu = false;
       this.networkName = 'BFA / Besu QBFT (Simulador Local)';
@@ -68,8 +101,7 @@ class AnchorService {
         merkleRoot,
         batchId,
         credentialCount,
-        metadata,
-        { gasPrice: 0 } // Costo 0 en red permisionada
+        metadata
       );
       const receipt = await tx.wait();
       return {
@@ -133,4 +165,5 @@ class AnchorService {
   }
 }
 
-module.exports = AnchorService;
+export { AnchorService };
+export default AnchorService;

@@ -8,7 +8,7 @@
  * de forma matemática que su título pertenecía al lote emitido en esa fecha.
  */
 
-const { sha256, canonicalizeJson } = require('./crypto');
+import { sha256, canonicalizeJson } from './crypto.js';
 
 /**
  * Normaliza un hash a Buffer de 32 bytes
@@ -138,7 +138,15 @@ function verifyMerkleProof(leafHash, proof, expectedRoot) {
   }
 }
 
-module.exports = {
+export {
+  hashCredential,
+  buildMerkleTree,
+  getMerkleProof,
+  verifyMerkleProof,
+  normalizeHash
+};
+
+export default {
   hashCredential,
   buildMerkleTree,
   getMerkleProof,

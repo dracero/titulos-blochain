@@ -1,13 +1,13 @@
-const { test, describe, it, before } = require('node:test');
-const assert = require('node:assert');
+import { test, describe, it, before } from 'node:test';
+import assert from 'node:assert';
 
-const { generateEd25519KeyPair } = require('../src/core/crypto');
-const DidWebManager = require('../src/core/did');
-const BitstringStatusList = require('../src/core/status-list');
-const { createDegreeCredential, signCredential } = require('../src/core/vc');
-const { hashCredential, buildMerkleTree, getMerkleProof } = require('../src/core/merkle');
-const DegreeVerifier = require('../src/core/verifier');
-const EvmSimulator = require('../src/blockchain/evm-simulator');
+import { generateEd25519KeyPair } from '../src/core/crypto.js';
+import DidWebManager from '../src/core/did.js';
+import BitstringStatusList from '../src/core/status-list.js';
+import { createDegreeCredential, signCredential } from '../src/core/vc.js';
+import { hashCredential, buildMerkleTree, getMerkleProof } from '../src/core/merkle.js';
+import DegreeVerifier from '../src/core/verifier.js';
+import EvmSimulator from '../src/blockchain/evm-simulator.js';
 
 describe('Flujo de Integración End-to-End: Emisión, Anclaje y Verificación UBA', () => {
   let hsmKeys;

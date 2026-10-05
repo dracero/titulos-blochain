@@ -12,10 +12,10 @@
  * no esté disponible o el verificador elija no consultar la blockchain.
  */
 
-const { canonicalizeJson, verifyEd25519, sha256 } = require('./crypto');
-const DidWebManager = require('./did');
-const BitstringStatusList = require('./status-list');
-const { hashCredential, verifyMerkleProof } = require('./merkle');
+import { canonicalizeJson, verifyEd25519, sha256 } from './crypto.js';
+import DidWebManager from './did.js';
+import BitstringStatusList from './status-list.js';
+import { hashCredential, verifyMerkleProof } from './merkle.js';
 
 class DegreeVerifier {
   /**
@@ -306,4 +306,5 @@ class DegreeVerifier {
   }
 }
 
-module.exports = DegreeVerifier;
+export { DegreeVerifier };
+export default DegreeVerifier;

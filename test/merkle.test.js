@@ -1,12 +1,12 @@
-const { test, describe, it } = require('node:test');
-const assert = require('node:assert');
-const { sha256 } = require('../src/core/crypto');
-const {
+import { test, describe, it } from 'node:test';
+import assert from 'node:assert';
+import { sha256 } from '../src/core/crypto.js';
+import {
   buildMerkleTree,
   getMerkleProof,
   verifyMerkleProof,
   hashCredential
-} = require('../src/core/merkle');
+} from '../src/core/merkle.js';
 
 describe('Árbol de Merkle y Pruebas Criptográficas de Inclusión', () => {
   it('Debe construir un árbol de Merkle a partir de hashes de hojas y generar la raíz', () => {

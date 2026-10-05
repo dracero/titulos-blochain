@@ -1,6 +1,6 @@
-const { test, describe, it } = require('node:test');
-const assert = require('node:assert');
-const {
+import { test, describe, it } from 'node:test';
+import assert from 'node:assert';
+import {
   generateEd25519KeyPair,
   signEd25519,
   verifyEd25519,
@@ -8,7 +8,7 @@ const {
   encodeMultibase,
   decodeMultibase,
   sha256
-} = require('../src/core/crypto');
+} from '../src/core/crypto.js';
 
 describe('Módulo Criptográfico Ed25519 y Multibase', () => {
   it('Debe generar un par de claves Ed25519 con formato multibase z...', () => {

@@ -97,6 +97,15 @@ class AcademicDatabase {
     this.graduates.set(id, record);
     return record;
   }
+
+  setGraduates(list) {
+    this.graduates.clear();
+    for (const g of list) {
+      this.graduates.set(g.id, g);
+    }
+  }
 }
 
-module.exports = new AcademicDatabase();
+const academicDatabaseInstance = new AcademicDatabase();
+export { academicDatabaseInstance as academicDb, AcademicDatabase };
+export default academicDatabaseInstance;

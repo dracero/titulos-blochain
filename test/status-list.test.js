@@ -1,6 +1,6 @@
-const { test, describe, it } = require('node:test');
-const assert = require('node:assert');
-const BitstringStatusList = require('../src/core/status-list');
+import { test, describe, it } from 'node:test';
+import assert from 'node:assert';
+import BitstringStatusList from '../src/core/status-list.js';
 
 describe('W3C Bitstring Status List v1.0', () => {
   it('Debe inicializar la lista con todos los bits en 0 (vigentes)', () => {

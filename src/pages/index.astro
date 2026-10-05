@@ -1,0 +1,30 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import NavBar from '../components/NavBar.astro';
+import ArchitectureTab from '../components/ArchitectureTab.astro';
+import IssuerTab from '../components/IssuerTab.astro';
+import AnchorTab from '../components/AnchorTab.astro';
+import GraduateTab from '../components/GraduateTab.astro';
+import VerifierTab from '../components/VerifierTab.astro';
+import SandboxTab from '../components/SandboxTab.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="UBA - Títulos Universitarios Verificables | Entorno de Prueba (Astro.js)">
+  <div class="app-layout">
+    <Header />
+    <NavBar />
+
+    <main class="content-container">
+      <ArchitectureTab />
+      <IssuerTab />
+      <AnchorTab />
+      <GraduateTab />
+      <VerifierTab />
+      <SandboxTab />
+    </main>
+
+    <Footer />
+  </div>
+</Layout>

@@ -28,5 +28,5 @@ fi
 echo "🧪 Ejecutando suite de pruebas automatizadas..."
 npm test
 
-echo "🚀 Iniciando servidor de emisión y verificación..."
-npm start
+echo "🚀 Iniciando entorno unificado (Besu QBFT + Servidor UBA)..."
+npm run dev

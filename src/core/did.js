@@ -124,4 +124,5 @@ class DidWebManager {
   }
 }
 
-module.exports = DidWebManager;
+export { DidWebManager };
+export default DidWebManager;

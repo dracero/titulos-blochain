@@ -1,7 +1,7 @@
-const { test, describe, it } = require('node:test');
-const assert = require('node:assert');
-const { createDegreeCredential, signCredential } = require('../src/core/vc');
-const { generateEd25519KeyPair } = require('../src/core/crypto');
+import { test, describe, it } from 'node:test';
+import assert from 'node:assert';
+import { createDegreeCredential, signCredential } from '../src/core/vc.js';
+import { generateEd25519KeyPair } from '../src/core/crypto.js';
 
 describe('W3C Verifiable Credentials 2.0 y Open Badges 3.0', () => {
   it('Debe generar la estructura de credencial conforme al esquema de la Sección 6', () => {

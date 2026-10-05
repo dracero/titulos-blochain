@@ -8,7 +8,7 @@
  * - 100% libre de costo, usando APIs nativas de Node.js (crypto)
  */
 
-const crypto = require('node:crypto');
+import crypto from 'node:crypto';
 
 // Alfabeto Base58 Bitcoin
 const BASE58_ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
@@ -222,7 +222,20 @@ function verifyEd25519(data, signatureMultibase, publicKey) {
   }
 }
 
-module.exports = {
+export {
+  toBase58,
+  fromBase58,
+  encodeMultibase,
+  decodeMultibase,
+  sha256,
+  canonicalizeJson,
+  generateEd25519KeyPair,
+  publicKeyFromMultibase,
+  signEd25519,
+  verifyEd25519
+};
+
+export default {
   toBase58,
   fromBase58,
   encodeMultibase,

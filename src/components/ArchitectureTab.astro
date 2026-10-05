@@ -1,0 +1,176 @@
+---
+// Tab 1: Arquitectura General
+---
+
+<section id="view-architecture" class="tab-view active">
+  <div class="section-hero">
+    <div class="hero-badge">Propuesta Técnica UBA &bull; Octubre 2026</div>
+    <h1 class="hero-title">Arquitectura de Emisión, Publicación y Verificación</h1>
+    <p class="hero-desc">
+      Esta implementación interactiva permite probar los tres grupos de actores definidos en la propuesta:
+      lo que opera la <strong>UBA</strong> (emisión y claves), la <strong>Capa Pública</strong> de solo lectura (did:web, Bitstring Status List y BFA/Besu), y los <strong>Verificadores Internacionales</strong>.
+    </p>
+  </div>
+
+  <!-- Diagrama Interactivo de Arquitectura -->
+  <div class="arch-diagram-card glass-panel">
+    <div class="diagram-grid">
+      
+      <!-- Grupo UBA (Violeta) -->
+      <div class="diagram-group group-uba">
+        <div class="group-header">
+          <span class="group-pill uba-pill">UBA (Emisor)</span>
+          <span class="group-sub">Infraestructura institucional protegida</span>
+        </div>
+        <div class="group-nodes">
+          <div class="diagram-node">
+            <div class="node-icon">📚</div>
+            <div class="node-content">
+              <h4>Sistema Académico</h4>
+              <p>Registro de egreso y datos mínimos (SIU Guaraní)</p>
+            </div>
+          </div>
+          <div class="diagram-connector vertical">⬇️ Genera datos de egreso</div>
+          <div class="diagram-node highlight">
+            <div class="node-icon">📜</div>
+            <div class="node-content">
+              <h4>Servicio de Emisión</h4>
+              <p>Arma VC 2.0 / Open Badges 3.0 y agrupa hashes en lotes</p>
+            </div>
+          </div>
+          <div class="diagram-connector horizontal-arrow">
+            <span class="connector-label">Solicita firma protegida</span>
+          </div>
+          <div class="diagram-node secure">
+            <div class="node-icon">🔐</div>
+            <div class="node-content">
+              <h4>HSM de Claves</h4>
+              <p>Firma Ed25519; la clave privada nunca sale del módulo</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Flecha de entrega y publicación -->
+      <div class="diagram-flow-divider">
+        <div class="flow-action">
+          <span class="flow-pill">Entrega</span>
+          <span class="flow-arrow">➡️</span>
+        </div>
+        <div class="flow-action">
+          <span class="flow-pill">Publica</span>
+          <span class="flow-arrow">➡️</span>
+        </div>
+      </div>
+
+      <!-- Grupo Capa Pública (Verde) -->
+      <div class="diagram-group group-public">
+        <div class="group-header">
+          <span class="group-pill public-pill">Capa Pública (Solo Lectura)</span>
+          <span class="group-sub">Accesible mundialmente sin intermediarios ni costos</span>
+        </div>
+        <div class="group-nodes">
+          <div class="diagram-node public-node" id="node-didweb">
+            <div class="node-icon">🌐</div>
+            <div class="node-content">
+              <h4>did:web:uba.ar</h4>
+              <p>Clave pública en dominio UBA sobre HTTPS</p>
+              <a href="/.well-known/did.json" target="_blank" class="node-link">Ver did.json ↗</a>
+            </div>
+          </div>
+          <div class="diagram-node public-node" id="node-statuslist">
+            <div class="node-icon">📋</div>
+            <div class="node-content">
+              <h4>Bitstring Status List</h4>
+              <p>Lista de revocación comprimida (gzip/multibase)</p>
+              <a href="/estado/1" target="_blank" class="node-link">Ver /estado/1 ↗</a>
+            </div>
+          </div>
+          <div class="diagram-node public-node" id="node-besu">
+            <div class="node-icon">⛓️</div>
+            <div class="node-content">
+              <h4>BFA o Besu (QBFT)</h4>
+              <p>Raíz de Merkle por lotes &bull; $0 gas &bull; Sin minería</p>
+              <span class="node-badge" id="diag-anchor-count">0 raíces ancladas</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Graduado y Verificador (Gris) -->
+      <div class="diagram-group group-external">
+        <div class="group-header">
+          <span class="group-pill external-pill">Graduado & Verificador</span>
+          <span class="group-sub">Soberanía de datos y validación descentralizada</span>
+        </div>
+        <div class="group-nodes">
+          <div class="diagram-node external-node">
+            <div class="node-icon">🎓</div>
+            <div class="node-content">
+              <h4>Graduado (Titular)</h4>
+              <p>Porta el título en su billetera digital o PDF con QR</p>
+            </div>
+          </div>
+          <div class="diagram-connector vertical">⬇️ Presenta QR o archivo JSON</div>
+          <div class="diagram-node external-node verifier-card">
+            <div class="node-icon">🔍</div>
+            <div class="node-content">
+              <h4>Verificador Público</h4>
+              <p>Portal web o app (empleador / universidad en el exterior)</p>
+              <div class="verifier-steps-hint">
+                <span>1. did:web</span> &bull; 
+                <span>2. Firma</span> &bull; 
+                <span>3. Revocación</span> &bull; 
+                <span>4. Merkle/Besu</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Resumen de Requisitos y Cómo se Cumplen -->
+  <div class="table-card glass-panel mt-4">
+    <h3 class="card-title">Matriz de Cumplimiento Técnico (Sección 2 de la Propuesta)</h3>
+    <div class="table-responsive">
+      <table class="uba-table">
+        <thead>
+          <tr>
+            <th>Requisito</th>
+            <th>Cómo se resuelve</th>
+            <th>Demostración en este entorno</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Sin minería</strong></td>
+            <td>Red de consenso por autoridad (Proof of Authority / QBFT) con validadores institucionales identificados.</td>
+            <td><span class="badge-success">Simulador QBFT / Besu activo</span></td>
+          </tr>
+          <tr>
+            <td><strong>Sin moneda (100% Gratis)</strong></td>
+            <td>Operación con costo de transacción cero ($0 gas) y sin tokens. No se pagan criptomonedas.</td>
+            <td><span class="badge-success">Transacciones con gasPrice = 0</span></td>
+          </tr>
+          <tr>
+            <td><strong>Exhibición global</strong></td>
+            <td>Estándar W3C Verifiable Credentials 2.0 / Open Badges 3.0 e identidad con did:web. No exige acceso obligatorio a blockchain para verificar firma.</td>
+            <td><span class="badge-success">Verificable vía JSON-LD y QR</span></td>
+          </tr>
+          <tr>
+            <td><strong>Protección de datos (Ley 25.326)</strong></td>
+            <td>Solo se escribe la raíz Merkle en la cadena. Los datos del título residen en la credencial del graduado.</td>
+            <td><span class="badge-success">Solo hashes de 32 bytes on-chain</span></td>
+          </tr>
+          <tr>
+            <td><strong>Revocación y rectificación</strong></td>
+            <td>Lista de estado fuera de la cadena (Bitstring Status List) que permite anular sin modificar la blockchain.</td>
+            <td><span class="badge-success">Bitwise gzip status list en /estado/1</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
