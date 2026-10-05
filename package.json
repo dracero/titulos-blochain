@@ -1,0 +1,22 @@
+{
+  "name": "titulos-bc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/server/index.js",
+    "dev": "node --watch src/server/index.js",
+    "test": "node --test test/*.test.js",
+    "besu:up": "docker compose up -d besu-node",
+    "besu:down": "docker compose down"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "ethers": "^6.17.0",
+    "express": "^5.2.1",
+    "qrcode": "^1.5.4"
+  }
+}

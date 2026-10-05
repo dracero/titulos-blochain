@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UBA - Títulos Universitarios Verificables | Entorno de Prueba</title>
+  <meta name="description" content="Entorno de prueba para la arquitectura de títulos verificables de la Universidad de Buenos Aires (W3C VC 2.0, Open Badges 3.0, did:web y anclaje en BFA/Besu).">
+  <!-- Fuentes modernas -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Header Institucional -->
+    <header class="app-header">
+      <div class="header-brand">
+        <div class="brand-crest">
+          <svg viewBox="0 0 100 100" class="uba-seal-icon">
+            <circle cx="50" cy="50" r="46" fill="none" stroke="#d4af37" stroke-width="3" stroke-dasharray="4 2"/>
+            <circle cx="50" cy="50" r="41" fill="#0c2340"/>
+            <path d="M50 18 L68 55 L32 55 Z" fill="#74acdf" opacity="0.9"/>
+            <path d="M50 28 L62 53 L38 53 Z" fill="#ffffff" opacity="0.95"/>
+            <rect x="47" y="55" width="6" height="26" fill="#d4af37"/>
+            <circle cx="50" cy="74" r="8" fill="#d4af37"/>
+            <circle cx="50" cy="74" r="4" fill="#0c2340"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">UNIVERSIDAD DE BUENOS AIRES</div>
+          <div class="brand-subtitle">Títulos Universitarios Verificables &bull; Entorno de Pruebas de Arquitectura</div>
+        </div>
+      </div>
+
+      <!-- Pill de estado de la red Blockchain -->
+      <div class="header-status">
+        <div class="status-indicator">
+          <span class="status-pulse" id="net-pulse"></span>
+          <span class="status-label" id="net-name">Conectando...</span>
+        </div>
+        <div class="status-meta">
+          <span class="meta-tag">Gas: <strong id="net-gas">$0 (Gratis)</strong></span>
+          <span class="meta-tag">Bloque: <strong id="net-block">#--</strong></span>
+          <span class="meta-tag">Consenso: <strong>QBFT / PoA</strong></span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Barra de Navegación de Arquitectura -->
+    <nav class="nav-bar">
+      <button class="nav-tab active" data-tab="architecture" id="tab-btn-arch">
+        <span class="tab-icon">📐</span>
+        <span class="tab-title">1. Arquitectura</span>
+      </button>
+      <button class="nav-tab" data-tab="issuer" id="tab-btn-issuer">
+        <span class="tab-icon">🏛️</span>
+        <span class="tab-title">2. Emisión (UBA)</span>
+      </button>
+      <button class="nav-tab" data-tab="anchor" id="tab-btn-anchor">
+        <span class="tab-icon">⛓️</span>
+        <span class="tab-title">3. Merkle & Blockchain</span>
+      </button>
+      <button class="nav-tab" data-tab="graduate" id="tab-btn-grad">
+        <span class="tab-icon">🎓</span>
+        <span class="tab-title">4. Título & Billetera</span>
+      </button>
+      <button class="nav-tab" data-tab="verifier" id="tab-btn-verifier">
+        <span class="tab-icon">🔍</span>
+        <span class="tab-title">5. Verificador Público</span>
+      </button>
+      <button class="nav-tab special-tab" data-tab="sandbox" id="tab-btn-sandbox">
+        <span class="tab-icon">🧪</span>
+        <span class="tab-title">6. Sandbox de Riesgos</span>
+      </button>
+    </nav>
+
+    <!-- Contenedor Principal de Vistas -->
+    <main class="content-container">
+
+      <!-- ============================================================== -->
+      <!-- TAB 1: ARQUITECTURA GENERAL (FIGURA 1 DEL PDF) -->
+      <!-- ============================================================== -->
+      <section id="view-architecture" class="tab-view active">
+        <div class="section-hero">
+          <div class="hero-badge">Propuesta Técnica UBA &bull; Octubre 2026</div>
+          <h1 class="hero-title">Arquitectura de Emisión, Publicación y Verificación</h1>
+          <p class="hero-desc">
+            Esta implementación interactiva permite probar los tres grupos de actores definidos en la propuesta:
+            lo que opera la <strong>UBA</strong> (emisión y claves), la <strong>Capa Pública</strong> de solo lectura (did:web, Bitstring Status List y BFA/Besu), y los <strong>Verificadores Internacionales</strong>.
+          </p>
+        </div>
+
+        <!-- Diagrama Interactivo de Arquitectura -->
+        <div class="arch-diagram-card glass-panel">
+          <div class="diagram-grid">
+            
+            <!-- Grupo UBA (Violeta) -->
+            <div class="diagram-group group-uba">
+              <div class="group-header">
+                <span class="group-pill uba-pill">UBA (Emisor)</span>
+                <span class="group-sub">Infraestructura institucional protegida</span>
+              </div>
+              <div class="group-nodes">
+                <div class="diagram-node">
+                  <div class="node-icon">📚</div>
+                  <div class="node-content">
+                    <h4>Sistema Académico</h4>
+                    <p>Registro de egreso y datos mínimos (SIU Guaraní)</p>
+                  </div>
+                </div>
+                <div class="diagram-connector vertical">⬇️ Genera datos de egreso</div>
+                <div class="diagram-node highlight">
+                  <div class="node-icon">📜</div>
+                  <div class="node-content">
+                    <h4>Servicio de Emisión</h4>
+                    <p>Arma VC 2.0 / Open Badges 3.0 y agrupa hashes en lotes</p>
+                  </div>
+                </div>
+                <div class="diagram-connector horizontal-arrow">
+                  <span class="connector-label">Solicita firma protegida</span>
+                </div>
+                <div class="diagram-node secure">
+                  <div class="node-icon">🔐</div>
+                  <div class="node-content">
+                    <h4>HSM de Claves</h4>
+                    <p>Firma Ed25519; la clave privada nunca sale del módulo</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Flecha de entrega y publicación -->
+            <div class="diagram-flow-divider">
+              <div class="flow-action">
+                <span class="flow-pill">Entrega</span>
+                <span class="flow-arrow">➡️</span>
+              </div>
+              <div class="flow-action">
+                <span class="flow-pill">Publica</span>
+                <span class="flow-arrow">➡️</span>
+              </div>
+            </div>
+
+            <!-- Grupo Capa Pública (Verde) -->
+            <div class="diagram-group group-public">
+              <div class="group-header">
+                <span class="group-pill public-pill">Capa Pública (Solo Lectura)</span>
+                <span class="group-sub">Accesible mundialmente sin intermediarios ni costos</span>
+              </div>
+              <div class="group-nodes">
+                <div class="diagram-node public-node" id="node-didweb">
+                  <div class="node-icon">🌐</div>
+                  <div class="node-content">
+                    <h4>did:web:uba.ar</h4>
+                    <p>Clave pública en dominio UBA sobre HTTPS</p>
+                    <a href="/.well-known/did.json" target="_blank" class="node-link">Ver did.json ↗</a>
+                  </div>
+                </div>
+                <div class="diagram-node public-node" id="node-statuslist">
+                  <div class="node-icon">📋</div>
+                  <div class="node-content">
+                    <h4>Bitstring Status List</h4>
+                    <p>Lista de revocación comprimida (gzip/multibase)</p>
+                    <a href="/estado/1" target="_blank" class="node-link">Ver /estado/1 ↗</a>
+                  </div>
+                </div>
+                <div class="diagram-node public-node" id="node-besu">
+                  <div class="node-icon">⛓️</div>
+                  <div class="node-content">
+                    <h4>BFA o Besu (QBFT)</h4>
+                    <p>Raíz de Merkle por lotes &bull; $0 gas &bull; Sin minería</p>
+                    <span class="node-badge" id="diag-anchor-count">0 raíces ancladas</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Graduado y Verificador (Gris) -->
+            <div class="diagram-group group-external">
+              <div class="group-header">
+                <span class="group-pill external-pill">Graduado & Verificador</span>
+                <span class="group-sub">Soberanía de datos y validación descentralizada</span>
+              </div>
+              <div class="group-nodes">
+                <div class="diagram-node external-node">
+                  <div class="node-icon">🎓</div>
+                  <div class="node-content">
+                    <h4>Graduado (Titular)</h4>
+                    <p>Porta el título en su billetera digital o PDF con QR</p>
+                  </div>
+                </div>
+                <div class="diagram-connector vertical">⬇️ Presenta QR o archivo JSON</div>
+                <div class="diagram-node external-node verifier-card">
+                  <div class="node-icon">🔍</div>
+                  <div class="node-content">
+                    <h4>Verificador Público</h4>
+                    <p>Portal web o app (empleador / universidad en el exterior)</p>
+                    <div class="verifier-steps-hint">
+                      <span>1. did:web</span> &bull; 
+                      <span>2. Firma</span> &bull; 
+                      <span>3. Revocación</span> &bull; 
+                      <span>4. Merkle/Besu</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Resumen de Requisitos y Cómo se Cumplen -->
+        <div class="table-card glass-panel mt-4">
+          <h3 class="card-title">Matriz de Cumplimiento Técnico (Sección 2 de la Propuesta)</h3>
+          <div class="table-responsive">
+            <table class="uba-table">
+              <thead>
+                <tr>
+                  <th>Requisito</th>
+                  <th>Cómo se resuelve</th>
+                  <th>Demostración en este entorno</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Sin minería</strong></td>
+                  <td>Red de consenso por autoridad (Proof of Authority / QBFT) con validadores institucionales identificados.</td>
+                  <td><span class="badge-success">Simulador QBFT / Besu activo</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Sin moneda (100% Gratis)</strong></td>
+                  <td>Operación con costo de transacción cero ($0 gas) y sin tokens. No se pagan criptomonedas.</td>
+                  <td><span class="badge-success">Transacciones con gasPrice = 0</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Exhibición global</strong></td>
+                  <td>Estándar W3C Verifiable Credentials 2.0 / Open Badges 3.0 e identidad con did:web. No exige acceso obligatorio a blockchain para verificar firma.</td>
+                  <td><span class="badge-success">Verificable vía JSON-LD y QR</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Protección de datos (Ley 25.326)</strong></td>
+                  <td>Solo se escribe la raíz Merkle en la cadena. Los datos del título residen en la credencial del graduado.</td>
+                  <td><span class="badge-success">Solo hashes de 32 bytes on-chain</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Revocación y rectificación</strong></td>
+                  <td>Lista de estado fuera de la cadena (Bitstring Status List) que permite anular sin modificar la blockchain.</td>
+                  <td><span class="badge-success">Bitwise gzip status list en /estado/1</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================== -->
+      <!-- TAB 2: SERVICIO DE EMISIÓN DE TÍTULOS (UBA) -->
+      <!-- ============================================================== -->
+      <section id="view-issuer" class="tab-view">
+        <div class="view-header">
+          <div>
+            <h2>Servicio de Emisión de Títulos (UBA)</h2>
+            <p>Registro de egreso en el sistema académico, armado de VC 2.0 y firma criptográfica con HSM institucional.</p>
+          </div>
+          <button class="btn btn-secondary" id="btn-refresh-graduates">🔄 Actualizar Lista</button>
+        </div>
+
+        <div class="grid-2col">
+          <!-- Columna Izquierda: Graduados en Sistema Académico -->
+          <div class="card glass-panel">
+            <div class="card-header-bar">
+              <h3 class="card-title">1. Graduados Confirmados (SIU Guaraní)</h3>
+              <span class="badge-neutral" id="graduates-count">5 graduados</span>
+            </div>
+            <p class="card-desc">Seleccione un egresado con trámite de diploma aprobado para emitir su credencial digital verificable:</p>
+            <div class="list-container" id="graduates-list">
+              <!-- Se puebla dinámicamente -->
+            </div>
+
+            <!-- Formulario para agregar graduado nuevo -->
+            <div class="quick-add-form mt-4">
+              <h4>+ Registrar Nuevo Graduado para Prueba</h4>
+              <div class="form-row">
+                <input type="text" id="new-grad-name" placeholder="Nombre y Apellido" class="input-field">
+                <input type="text" id="new-grad-dni" placeholder="DNI" class="input-field">
+              </div>
+              <div class="form-row">
+                <select id="new-grad-faculty" class="input-field">
+                  <option value="Facultad de Ciencias Exactas y Naturales">Fac. de Ciencias Exactas y Naturales</option>
+                  <option value="Facultad de Medicina">Facultad de Medicina</option>
+                  <option value="Facultad de Derecho">Facultad de Derecho</option>
+                  <option value="Facultad de Ingeniería">Facultad de Ingeniería</option>
+                  <option value="Facultad de Ciencias Económicas">Facultad de Ciencias Económicas</option>
+                  <option value="Facultad de Filosofía y Letras">Facultad de Filosofía y Letras</option>
+                </select>
+                <input type="text" id="new-grad-degree" placeholder="Título (ej: Lic. en Física)" class="input-field">
+              </div>
+              <button class="btn btn-secondary btn-block" id="btn-add-graduate">Agregar al Sistema Académico</button>
+            </div>
+          </div>
+
+          <!-- Columna Derecha: Títulos Emitidos y Estado de Revocación -->
+          <div class="card glass-panel">
+            <div class="card-header-bar">
+              <h3 class="card-title">2. Títulos Emitidos & Estado de Vigencia</h3>
+              <span class="badge-info" id="issued-count">0 emitidos</span>
+            </div>
+            <p class="card-desc">Títulos firmados con la clave de la UBA. Cada título tiene un índice asignado en la Bitstring Status List:</p>
+            <div class="list-container" id="issued-credentials-list">
+              <div class="empty-state">No hay títulos emitidos aún. Emita uno desde la lista de la izquierda.</div>
+            </div>
+            <div class="batch-action-bar mt-3" id="batch-action-container" style="display: none;">
+              <div class="batch-info-text">
+                <span id="pending-anchor-count">0</span> títulos pendientes de anclaje a la blockchain.
+              </div>
+              <button class="btn btn-primary" id="btn-goto-anchor">Ir a Anclaje en Lote ➡️</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================== -->
+      <!-- TAB 3: ÁRBOL DE MERKLE Y ANCLAJE EN BLOCKCHAIN (BESU/BFA) -->
+      <!-- ============================================================== -->
+      <section id="view-anchor" class="tab-view">
+        <div class="view-header">
+          <div>
+            <h2>Anclaje Periódico en Blockchain (BFA o Besu QBFT)</h2>
+            <p>Se agrupan los hashes de los títulos emitidos en un árbol de Merkle y se registra únicamente la raíz (32 bytes) como prueba inmutable de existencia y fecha.</p>
+          </div>
+          <button class="btn btn-primary" id="btn-do-batch-anchor">
+            <span>⚡</span> Anclar Lote Pendiente en Blockchain
+          </button>
+        </div>
+
+        <div class="grid-2col">
+          <!-- Columna Izquierda: Visualizador del Árbol de Merkle -->
+          <div class="card glass-panel">
+            <h3 class="card-title">Árbol de Merkle del Lote</h3>
+            <p class="card-desc">Representación criptográfica de las hojas (títulos) y el cálculo sucesivo de hashes SHA-256 hacia la raíz:</p>
+            
+            <div class="merkle-tree-visualizer" id="merkle-visualizer">
+              <div class="empty-state">Emita títulos y ancle un lote para visualizar la estructura del árbol de Merkle.</div>
+            </div>
+
+            <div class="info-callout mt-3">
+              <strong>💡 Privacidad y Eficiencia:</strong>
+              Al registrar únicamente la raíz en BFA o Besu, no se revelan datos de los graduados y se pueden registrar miles de títulos en una sola transacción a costo $0.
+            </div>
+          </div>
+
+          <!-- Columna Derecha: Registro Inmutable en Contrato Inteligente -->
+          <div class="card glass-panel">
+            <h3 class="card-title">Registro en Smart Contract (MerkleAnchorRegistry)</h3>
+            <p class="card-desc">Transacciones confirmadas en la red permisionada (gas cero):</p>
+            
+            <div class="blockchain-details-box" id="latest-anchor-box">
+              <div class="meta-row">
+                <span class="meta-name">Red Blockchain:</span>
+                <span class="meta-val" id="bc-network">Cargando...</span>
+              </div>
+              <div class="meta-row">
+                <span class="meta-name">Contrato Registro:</span>
+                <span class="meta-val code-font" id="bc-contract">0x8ba1f109...DBA72</span>
+              </div>
+              <div class="meta-row">
+                <span class="meta-name">Costo de Transacción:</span>
+                <span class="meta-val text-success">0.00 ARS (Sin minería ni monedas)</span>
+              </div>
+              <div class="meta-row">
+                <span class="meta-name">Última Raíz Anclada:</span>
+                <span class="meta-val code-font text-gold" id="bc-latest-root">Ninguna aún</span>
+              </div>
+              <div class="meta-row">
+                <span class="meta-name">Último Bloque:</span>
+                <span class="meta-val" id="bc-latest-block">#--</span>
+              </div>
+              <div class="meta-row">
+                <span class="meta-name">Tx Hash:</span>
+                <span class="meta-val code-font" id="bc-latest-tx">--</span>
+              </div>
+            </div>
+
+            <h4 class="mt-4">Historial de Lotes Anclados</h4>
+            <div class="batch-history-list" id="batch-history-list">
+              <div class="empty-state">No se registraron lotes aún.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================== -->
+      <!-- TAB 4: VISOR DEL GRADUADO (DIPLOMA Y BILLETERA) -->
+      <!-- ============================================================== -->
+      <section id="view-graduate" class="tab-view">
+        <div class="view-header">
+          <div>
+            <h2>Billetera y Diploma Digital del Graduado</h2>
+            <p>El título pertenece al graduado, quien decide cómo y con quién compartirlo. Se puede presentar mediante código QR o exportar como credencial digital W3C.</p>
+          </div>
+          <div class="select-grad-container">
+            <label for="select-credential-view">Seleccionar Título:</label>
+            <select id="select-credential-view" class="input-field select-inline">
+              <!-- Se puebla dinámicamente -->
+            </select>
+          </div>
+        </div>
+
+        <div class="grid-diploma-layout">
+          <!-- Diploma Digital Estilo UBA -->
+          <div class="diploma-container glass-panel">
+            <div class="diploma-border">
+              <div class="diploma-inner">
+                <div class="diploma-seal">
+                  <svg viewBox="0 0 100 100" class="diploma-seal-svg">
+                    <circle cx="50" cy="50" r="45" fill="none" stroke="#0c2340" stroke-width="2"/>
+                    <circle cx="50" cy="50" r="41" fill="none" stroke="#d4af37" stroke-width="1.5" stroke-dasharray="3 2"/>
+                    <text x="50" y="32" font-size="6" text-anchor="middle" font-weight="bold" fill="#0c2340" letter-spacing="1.5">UNIVERSIDAD DE BUENOS AIRES</text>
+                    <path d="M50 40 L60 62 L40 62 Z" fill="#74acdf"/>
+                    <circle cx="50" cy="72" r="6" fill="#d4af37"/>
+                    <text x="50" y="85" font-size="5" text-anchor="middle" fill="#0c2340">ARGENTINA</text>
+                  </svg>
+                </div>
+                <div class="diploma-uba-header">UNIVERSIDAD DE BUENOS AIRES</div>
+                <div class="diploma-sub-header">REPÚBLICA ARGENTINA</div>
+                <div class="diploma-text-intro">Por cuanto habiendo cumplido con todos los requisitos establecidos por los planes de estudio:</div>
+                <div class="diploma-graduate-name" id="diploma-name">JUAN IGNACIO PÉREZ</div>
+                <div class="diploma-text-mid">ha obtenido el grado universitario oficial de:</div>
+                <div class="diploma-degree-title" id="diploma-degree">Licenciado en Ciencias de la Computación</div>
+                <div class="diploma-faculty" id="diploma-faculty">Facultad de Ciencias Exactas y Naturales</div>
+                
+                <div class="diploma-meta-grid">
+                  <div class="diploma-meta-item">
+                    <span class="diploma-meta-lbl">Fecha de Egreso:</span>
+                    <span class="diploma-meta-txt" id="diploma-date">2026-11-20</span>
+                  </div>
+                  <div class="diploma-meta-item">
+                    <span class="diploma-meta-lbl">Identificador Emisor:</span>
+                    <span class="diploma-meta-txt code-font" id="diploma-issuer">did:web:uba.ar</span>
+                  </div>
+                  <div class="diploma-meta-item">
+                    <span class="diploma-meta-lbl">Firma Criptográfica:</span>
+                    <span class="diploma-meta-txt" id="diploma-sig-status">Ed25519 (DataIntegrityProof)</span>
+                  </div>
+                  <div class="diploma-meta-item">
+                    <span class="diploma-meta-lbl">Anclaje Blockchain:</span>
+                    <span class="diploma-meta-txt text-success" id="diploma-anchor-status">Confirmado en Besu/BFA</span>
+                  </div>
+                </div>
+
+                <div class="diploma-signatures-row">
+                  <div class="diploma-sig">
+                    <div class="sig-line"></div>
+                    <div class="sig-name">Rector UBA</div>
+                    <div class="sig-role">Firma Digital HSM</div>
+                  </div>
+                  <div class="diploma-qr-box">
+                    <img id="diploma-qr-img" src="" alt="QR de Verificación" class="qr-image">
+                    <span class="qr-hint">Escanear para verificar</span>
+                  </div>
+                  <div class="diploma-sig">
+                    <div class="sig-line"></div>
+                    <div class="sig-name">Decano de Facultad</div>
+                    <div class="sig-role">Sello Académico</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Inspector de Credencial Técnica (JSON-LD & Merkle Proof) -->
+          <div class="credential-tech-box glass-panel">
+            <div class="tabs-sub">
+              <button class="sub-tab active" data-sub="tab-json">JSON-LD VC 2.0</button>
+              <button class="sub-tab" data-sub="tab-proof">Prueba de Inclusión Merkle</button>
+            </div>
+
+            <!-- Tab JSON-LD -->
+            <div id="tab-json" class="sub-tab-content active">
+              <div class="code-actions">
+                <span class="code-badge">W3C Verifiable Credential 2.0</span>
+                <button class="btn btn-small" id="btn-copy-vc">Copiar JSON</button>
+              </div>
+              <pre class="json-code-box"><code id="code-vc-json">Cargando credencial...</code></pre>
+            </div>
+
+            <!-- Tab Merkle Proof -->
+            <div id="tab-proof" class="sub-tab-content">
+              <div class="code-actions">
+                <span class="code-badge">Camino Criptográfico de Inclusión</span>
+                <button class="btn btn-small" id="btn-send-to-verifier">Probar en Verificador ➡️</button>
+              </div>
+              <div class="proof-inspection" id="proof-inspection-box">
+                <!-- Se puebla dinámicamente -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================== -->
+      <!-- TAB 5: PORTAL PÚBLICO DE VERIFICACIÓN (4 NIVELES) -->
+      <!-- ============================================================== -->
+      <section id="view-verifier" class="tab-view">
+        <div class="view-header">
+          <div>
+            <h2>Portal Público de Verificación de Títulos</h2>
+            <p>Utilizado por empleadores o universidades extranjeras. Ejecuta los 4 niveles de verificación definidos en la Sección 4 del informe técnico.</p>
+          </div>
+          <button class="btn btn-primary" id="btn-run-verification">
+            <span>🔍</span> Ejecutar Verificación
+          </button>
+        </div>
+
+        <div class="grid-2col">
+          <!-- Columna Izquierda: Entrada de Datos de Verificación -->
+          <div class="card glass-panel">
+            <h3 class="card-title">Carga de Credencial a Validar</h3>
+            <p class="card-desc">Pegue el JSON de la credencial o elija un título emitido:</p>
+            
+            <div class="preset-selector mb-3">
+              <label for="select-verifier-preset">Cargar título de prueba:</label>
+              <select id="select-verifier-preset" class="input-field">
+                <!-- Se puebla dinámicamente -->
+              </select>
+            </div>
+
+            <div class="options-bar mb-3">
+              <label class="checkbox-label">
+                <input type="checkbox" id="check-skip-blockchain">
+                <span>Simular verificación sin blockchain (demuestra autonomía did:web)</span>
+              </label>
+            </div>
+
+            <textarea id="verifier-json-input" class="textarea-field" rows="12" placeholder="Pegue aquí el objeto JSON de la Verifiable Credential..."></textarea>
+          </div>
+
+          <!-- Columna Derecha: Resultados y Diagnóstico de los 4 Niveles -->
+          <div class="card glass-panel">
+            <div class="card-header-bar">
+              <h3 class="card-title">Diagnóstico de Verificación</h3>
+              <div id="overall-badge" class="badge-neutral">Listo para verificar</div>
+            </div>
+
+            <div class="overall-summary-banner" id="overall-summary-banner" style="display: none;">
+              <span id="summary-icon">ℹ️</span>
+              <span id="summary-text">Presione "Ejecutar Verificación" para comenzar.</span>
+            </div>
+
+            <div class="verification-stepper mt-3">
+              <!-- Paso 1: did:web -->
+              <div class="step-card" id="step-card-did">
+                <div class="step-header">
+                  <div class="step-number">1</div>
+                  <div class="step-info">
+                    <h4>Identidad del Emisor (did:web)</h4>
+                    <p>Resuelve el DID y valida la clave pública institucional en el dominio uba.ar</p>
+                  </div>
+                  <div class="step-status" id="status-step-did">⚪ PENDIENTE</div>
+                </div>
+                <div class="step-body" id="body-step-did"></div>
+              </div>
+
+              <!-- Paso 2: Firma Criptográfica -->
+              <div class="step-card" id="step-card-sig">
+                <div class="step-header">
+                  <div class="step-number">2</div>
+                  <div class="step-info">
+                    <h4>Firma Criptográfica (Ed25519)</h4>
+                    <p>DataIntegrityProof eddsa-rdfc-2022 con JCS. Garantiza integridad absoluta</p>
+                  </div>
+                  <div class="step-status" id="status-step-sig">⚪ PENDIENTE</div>
+                </div>
+                <div class="step-body" id="body-step-sig"></div>
+              </div>
+
+              <!-- Paso 3: Lista de Revocación -->
+              <div class="step-card" id="step-card-status">
+                <div class="step-header">
+                  <div class="step-number">3</div>
+                  <div class="step-info">
+                    <h4>Lista de Revocación (Bitstring Status List)</h4>
+                    <p>Verifica si el título fue anulado o rectificado sin tocar la blockchain</p>
+                  </div>
+                  <div class="step-status" id="status-step-status">⚪ PENDIENTE</div>
+                </div>
+                <div class="step-body" id="body-step-status"></div>
+              </div>
+
+              <!-- Paso 4: Anclaje Blockchain -->
+              <div class="step-card" id="step-card-anchor">
+                <div class="step-header">
+                  <div class="step-number">4</div>
+                  <div class="step-info">
+                    <h4>Prueba de Merkle & Anclaje Blockchain</h4>
+                    <p>Comprueba la prueba de inclusión contra la raíz registrada en Besu / BFA</p>
+                  </div>
+                  <div class="step-status" id="status-step-anchor">⚪ PENDIENTE</div>
+                </div>
+                <div class="step-body" id="body-step-anchor"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================== -->
+      <!-- TAB 6: SANDBOX DE RIESGOS Y ATAQUES (SECCIÓN 9 DEL PDF) -->
+      <!-- ============================================================== -->
+      <section id="view-sandbox" class="tab-view">
+        <div class="view-header">
+          <div>
+            <h2>Sandbox de Pruebas de Ciberseguridad y Resiliencia</h2>
+            <p>Ejecute en tiempo real los escenarios de riesgo y mitigación documentados en la Sección 9 de la propuesta técnica.</p>
+          </div>
+        </div>
+
+        <div class="scenarios-grid" id="scenarios-container">
+          <!-- Se puebla dinámicamente con los 5 escenarios -->
+        </div>
+
+        <div class="scenario-result-card glass-panel mt-4" id="scenario-result-box" style="display: none;">
+          <div class="card-header-bar">
+            <h3 class="card-title">Resultado de la Prueba de Riesgo</h3>
+            <span class="badge-info" id="scenario-result-pill">Completada</span>
+          </div>
+          <div class="scenario-explanation-box" id="scenario-explanation">
+            <!-- Explicación técnica alineada con el documento -->
+          </div>
+          <div class="scenario-steps-breakdown mt-3" id="scenario-steps-breakdown">
+            <!-- Pasos -->
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <div>Universidad de Buenos Aires &bull; Secretaría Académica &bull; Propuesta Técnica de Títulos Verificables 2026</div>
+      <div class="footer-links">
+        <a href="/.well-known/did.json" target="_blank">did:web UBA</a>
+        <a href="/estado/1" target="_blank">Bitstring Status List</a>
+        <a href="/api/blockchain/status" target="_blank">Estado Blockchain</a>
+      </div>
+    </footer>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>

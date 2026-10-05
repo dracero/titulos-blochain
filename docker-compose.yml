@@ -1,0 +1,18 @@
+services:
+  # Nodo local Hyperledger Besu (QBFT / Dev Mode con gas en cero y sin criptomoneda)
+  # 100% gratuito y de código abierto (Apache 2.0)
+  besu-node:
+    image: hyperledger/besu:latest
+    container_name: uba-besu-node
+    command:
+      - --network=dev
+      - --rpc-http-enabled=true
+      - --rpc-http-host=0.0.0.0
+      - --rpc-http-port=8545
+      - --rpc-http-api=ETH,NET,WEB3
+      - --rpc-http-cors-origins=*
+      - --host-allowlist=*
+      - --min-gas-price=0
+    ports:
+      - "8545:8545"
+    restart: unless-stopped
