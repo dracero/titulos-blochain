@@ -13,7 +13,14 @@ const { Pool } = pg;
 
 export class DatabaseService {
   constructor(options = {}) {
-    this.connectionString = options.connectionString || process.env.DATABASE_URL || 'postgresql://uba_admin:uba_secret_2026@127.0.0.1:5432/titulos_uba';
+    const host = process.env.POSTGRES_HOST || '127.0.0.1';
+    const port = process.env.POSTGRES_PORT || '5432';
+    const user = process.env.POSTGRES_USER || 'uba_admin';
+    const pass = process.env.POSTGRES_PASSWORD || 'uba_secret_2026';
+    const db = process.env.POSTGRES_DB || 'titulos_uba';
+    const fallbackUrl = `postgresql://${user}:${pass}@${host}:${port}/${db}`;
+
+    this.connectionString = options.connectionString || process.env.DATABASE_URL || fallbackUrl;
     this.pool = null;
     this.isPostgres = false;
     this.initPromise = null;

@@ -10,6 +10,18 @@
 
 import { execSync, spawn } from 'node:child_process';
 import net from 'node:net';
+import fs from 'node:fs';
+
+// Cargar variables de entorno desde .env si existe, o generar .env desde .env.example
+try {
+  if (fs.existsSync('.env')) {
+    process.loadEnvFile('.env');
+  } else if (fs.existsSync('.env.example')) {
+    fs.copyFileSync('.env.example', '.env');
+    process.loadEnvFile('.env');
+    process.stdout.write('📝 Archivo .env generado automáticamente a partir de .env.example\n');
+  }
+} catch (_) {}
 
 async function waitForRpc(timeoutMs = 15000) {
   const start = Date.now();
@@ -60,6 +72,16 @@ async function startInfrastructure() {
   try {
     execSync('docker compose version', { stdio: 'ignore' });
     
+    // Asegurar existencia de clave privada local para el validador Besu
+    if (!fs.existsSync('besu/key.priv')) {
+      if (!fs.existsSync('besu')) {
+        fs.mkdirSync('besu', { recursive: true });
+      }
+      const nodeKey = (process.env.BESU_NODE_KEY || '0x99377a0d84e8b8f87011bcd704b80f2387609e0ebdc36080c7434991139d2265').trim();
+      fs.writeFileSync('besu/key.priv', nodeKey + '\n', { mode: 0o600 });
+      process.stdout.write('🔑 Clave de nodo Besu configurada localmente en besu/key.priv (ignorada por Git).\n');
+    }
+
     process.stdout.write('🚀 Iniciando contenedores Besu (QBFT gas=0) y PostgreSQL (Persistencia JSONB)...\n');
     execSync('docker compose up -d besu-node postgres', { stdio: 'inherit' });
 
